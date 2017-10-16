@@ -1,27 +1,34 @@
-# Twitter API
-from requests_oauthlib import OAuth1Session
-import json
+import tweepy
+import nltk
 
-key = "vORyHnmDqljgnzC0AakEpdrSb"
-secret = "cVAZHQjnd5mtYg3HP6TRoW2Ly0zfOZoZccLPtLF4rEIu7BCsK4"
-token = "4745335103-g9wsWOWsxS2AzkTVQNPiH3t9CsUcCu1yCjgr95u"
-token_secret = "Pu4ZNFVefu5itcS15UW2QEPARoZsNBkFUpCZltAz7ZUt1"
+# KEYS
+consumer_key = 'vORyHnmDqljgnzC0AakEpdrSb'
+consumer_secret = 'cVAZHQjnd5mtYg3HP6TRoW2Ly0zfOZoZccLPtLF4rEIu7BCsK4'
+access_token = '4745335103-g9wsWOWsxS2AzkTVQNPiH3t9CsUcCu1yCjgr95u'
+access_token_secret = 'Pu4ZNFVefu5itcS15UW2QEPARoZsNBkFUpCZltAz7ZUt1'
 
-twitter = OAuth1Session(key, client_secret=secret,
-                        resource_owner_key=token,
-                        resource_owner_secret=token_secret)
+# AUTH
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
 
-r = twitter.get(
-    'https://stream.twitter.com/1.1/statuses/sample.json?retweet_count=0&geocode=59.9138688,10.752245399999993',
-    stream=True
-)
+# TWEETS
+def getTweets():
+    tweets = api.home_timeline(count = 100)
 
-for line in r.iter_lines():
-    if line:
-        #print line
-        parsedLine = json.loads(line) #['text']
-        print json.dumps(parsedLine, indent=4, sort_keys=True)
+    for tweet in tweets:
+        if (not tweet.retweeted) and ('RT @' not in tweet.text) and (tweet.lang == "no"):
+            print tweet.text
+            print
+
+# NAMED ENTITY RECOGNITION
+def NER(sentence):
+    tokens = nltk.word_tokenize(sentence)
+    pos_tags = nltk.pos_tag(tokens)
+    print nltk.ne_chunk(pos_tags, binary=False)
 
 
-#59.9138688 lat
-#10.752245399999993 long
+sentence = "Let's meet tomorrow at Biltema";
+#tweets = getTweets()
+NER(sentence)
+# http://nishutayaltech.blogspot.no/2015/02/penn-treebank-pos-tags-in-natural.html
