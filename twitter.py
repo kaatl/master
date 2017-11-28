@@ -7,6 +7,8 @@ from termcolor import colored
 import nltk
 from polyglot.text import Text
 
+from ner import main
+
 # ===== KEYS =====
 consumer_key = 'vORyHnmDqljgnzC0AakEpdrSb'
 consumer_secret = 'cVAZHQjnd5mtYg3HP6TRoW2Ly0zfOZoZccLPtLF4rEIu7BCsK4'
@@ -74,49 +76,4 @@ def removeIllegalUnicode(text):
 
     return text
 
-
-# ==================== NLTK ========================
-def nltkNER(sentence):
-    print colored('\n========NLTK=======', 'blue')
-    tokens = nltk.word_tokenize(sentence)
-    pos_tags = nltk.pos_tag(tokens)
-    chunked = nltk.ne_chunk(pos_tags, binary=False)
-    print getNERList(chunked), '\n'
-
-# Returnerer en liste med Named Entities fra en tweet (for nltk)
-def getNERList(chunked):
-    prev = None
-    continuous_chunk = []
-    current_chunk = []
-    for i in chunked:
-        if type(i) == nltk.tree.Tree:
-            current_chunk.append(' '.join([token for token, pos in i.leaves()]))
-        elif current_chunk:
-            named_entity = ' '.join(current_chunk)
-            if named_entity not in continuous_chunk:
-                continuous_chunk.append(named_entity)
-                current_chunk = []
-        else:
-            continue
-
-    return continuous_chunk
-
-# ==================== Polyglot ========================
-def polyglotNER(sentence):
-    print colored('\n\n========POLYGLOT========\n', 'blue')
-    print sentence, '\n'
-    text = Text(sentence, hint_language_code='no')
-
-    for entity in text.entities:
-        print entity.tag, entity
-
-tweets = getTweets()
-texts = sanitizeText(tweets)
-
-for text in texts:
-    print colored("\n=================NEW TWEET=================\n", 'cyan')
-    print text[1]
-    if (text[2] == 'en'):
-        nltkNER(text[0])
-    else:
-        polyglotNER(text[0])
+main([["This is a test for Trump", "This is a test for Trump!!!", "en"]])
