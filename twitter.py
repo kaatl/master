@@ -7,7 +7,8 @@ from termcolor import colored
 import nltk
 from polyglot.text import Text
 
-from ner import main
+# Local files
+from ner import ner_main
 
 # ===== KEYS =====
 consumer_key = 'vORyHnmDqljgnzC0AakEpdrSb'
@@ -22,7 +23,7 @@ api = tweepy.API(auth)
 
 # ===== TWEETS ====
 def getTweets():
-    return api.home_timeline(tweet_mode = 'extended', count = 5)
+    return api.home_timeline(tweet_mode = 'extended', count = 5) # Sample
 
 # ==== SANITIZING ====
 def sanitizeText(tweets):
@@ -36,16 +37,11 @@ def sanitizeText(tweets):
     return texts
 
 def removeIllegalUnicode(text):
-    # Det går ikke an å strippe bort "-" hvis det er mellomrom på begge sider. Eks. "Her har du - et eksempel"
-    # text = ' '.join([w.replace('-', ' ') for w in text.split()])
-
-    # Fjerner punctuation, usikker på om vi må gjøre dette "manuelt"
-    # text = " ".join([w.strip(',."$?!:;-') for w in text.split()])
 
     # Fjerner nordiske chars (nltk klarer ikke å ha æøå)
-    text = re.sub(u'(\u00C6|\u00E6)', 'ae', text)
-    text = re.sub(u'(\u00C5|\u00E5)', 'aa', text)
-    text = re.sub(u'(\u00D8|\u00F8)', 'oe', text)
+    # text = re.sub(u'(\u00C6|\u00E6)', 'ae', text)
+    # text = re.sub(u'(\u00C5|\u00E5)', 'aa', text)
+    # text = re.sub(u'(\u00D8|\u00F8)', 'oe', text)
 
     # Tar bort url på slutten av setningen, bare for å gjøre det enkelt nå i starten
     urlIndex = text.find('http')
@@ -76,4 +72,4 @@ def removeIllegalUnicode(text):
 
     return text
 
-main([["This is a test for Trump", "This is a test for Trump!!!", "en"]])
+ner_main([["This is a test for Trump", "This is a test for Trump!!!", "en"]]) #Takes double list with [santized_text, original text, language]
