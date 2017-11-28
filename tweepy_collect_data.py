@@ -1,4 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import tweepy
+from sanitize_data import removeIllegalUnicode
 
 # ===== KEYS =====
 consumer_key = 'vORyHnmDqljgnzC0AakEpdrSb'
@@ -35,7 +39,7 @@ def collect_data():
     f = open("collected_data_twitter.txt", "a")
     tweets_id = []
     print "Iterating through common words"
-    for i in range(181,200): # index of the common words, får rate limit på 180 kall hvert 15 minutt. https://developer.twitter.com/en/docs/basics/rate-limiting
+    for i in range(1): # index of the common words, får rate limit på 180 kall hvert 15 minutt. https://developer.twitter.com/en/docs/basics/rate-limiting
         print i, "Next word:", common_words[i]
         texts = getTweets(common_words[i])
         for text in texts:

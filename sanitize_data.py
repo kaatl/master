@@ -1,15 +1,18 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import re
 
 # ==== SANITIZING ====
-def sanitizeText(tweets):
-    texts = []
-    for tweet in tweets:
-        # if (not tweet.retweeted) and ('RT @' not in tweet.full_text): # and (tweet.lang == "no"):
-        text = tweet.full_text
-        text = removeIllegalUnicode(text)
-        texts.append([str(text), tweet.full_text, tweet.lang])
-
-    return texts
+# def sanitizeText(tweets):
+#     texts = []
+#     for tweet in tweets:
+#         # if (not tweet.retweeted) and ('RT @' not in tweet.full_text): # and (tweet.lang == "no"):
+#         text = tweet.full_text
+#         text = removeIllegalUnicode(text)
+#         texts.append([str(text), tweet.full_text, tweet.lang])
+#
+#     return texts
 
 def removeIllegalUnicode(text):
 

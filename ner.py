@@ -15,7 +15,7 @@ def nltkNER(sentence):
     tokens = nltk.word_tokenize(sentence)
     pos_tags = nltk.pos_tag(tokens)
     chunked = nltk.ne_chunk(pos_tags, binary=False)
-    print '\n', chunked, '\n\n', getNERList(chunked), '\n'
+    print chunked, '\n\n', getNERList(chunked), '\n'
 
 # Returnerer en liste med Named Entities fra en tweet (for nltk)
 def getNERList(chunked):
@@ -95,7 +95,7 @@ def getCoreNLPList(tokens):
 
 def polyglotNER(sentence, lang):
     print colored('\n========POLYGLOT========\n', 'blue')
-    print sentence, '\n'
+    print sentence
     if (lang == 'no'):
         text = Text(sentence, hint_language_code='no')
     else:
@@ -106,7 +106,7 @@ def polyglotNER(sentence, lang):
 
 
 
-def ner_main(texts):
+def runNER(texts):
     for text in texts:
         print colored('\n\n\n\n NEW TWEET \n\n', 'green')
         print colored(text[1], 'cyan'), '\n'
