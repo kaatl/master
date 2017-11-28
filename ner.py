@@ -43,7 +43,7 @@ def getNERList(chunked):
 """
 ***** STANFORD CORENLP *****
 """
-
+# java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
 nlp = StanfordCoreNLP('http://localhost:9000')
 
 def stanfordCoreNLPNER(sentence, lang):

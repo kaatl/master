@@ -1,29 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import tweepy
 import re
-from termcolor import colored
-import nltk
-from polyglot.text import Text
-
-# Local files
-from ner import ner_main
-
-# ===== KEYS =====
-consumer_key = 'vORyHnmDqljgnzC0AakEpdrSb'
-consumer_secret = 'cVAZHQjnd5mtYg3HP6TRoW2Ly0zfOZoZccLPtLF4rEIu7BCsK4'
-access_token = '4745335103-g9wsWOWsxS2AzkTVQNPiH3t9CsUcCu1yCjgr95u'
-access_token_secret = 'Pu4ZNFVefu5itcS15UW2QEPARoZsNBkFUpCZltAz7ZUt1'
-
-# ===== AUTH =====
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
-
-# ===== TWEETS ====
-def getTweets():
-    return api.home_timeline(tweet_mode = 'extended', count = 5) # Sample
 
 # ==== SANITIZING ====
 def sanitizeText(tweets):
@@ -71,5 +46,3 @@ def removeIllegalUnicode(text):
     text = ' '.join([re.sub(emoji_pattern, '', w) for w in text.split()])
 
     return text
-
-ner_main([["This is a test for Trump", "This is a test for Trump!!!", "en"]]) #Takes double list with [santized_text, original text, language]
