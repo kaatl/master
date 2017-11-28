@@ -10,7 +10,7 @@ from tweepy_collect_data import collect_data # Collect twitterdata, tweepy
 
 
 # Example of list the different methods uses, a double list with [[santized_text, original text, language]]
-texts = [["This is a test for Trump", "This is a test for Trump!!!", "en"]] 
+texts = [["Daughter of Apple engineer says her father was fired after she posted video of iPhone X", "Daughter of Apple engineer says her father was fired after she posted video of iPhone X!!", "en"]] 
 
 
 
