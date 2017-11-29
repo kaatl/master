@@ -3,22 +3,23 @@ import csv
 english_ner_dataset = {}
 ner_tags = ['geo', 'org', 'per', 'gpe']
 
-current_key = ""
-with file('dataset/ner_dataset.csv') as f:
-    reader = csv.reader(f, delimiter='|')
-    for line in reader:
-        line = line[0].split(';')
-        # print(line)
-        # print(line[0], line[1], line[2], line[3], current_key)
-        if ("Sentence" in line[0]):
-            current_key = line[0]
-            english_ner_dataset[current_key] = [[line[1], line[2], line[3]]]
-        else:
-            english_ner_dataset[current_key].append([line[1], line[2], line[3]])
+def read_english_dataset():
+    current_key = ""
+    with file('dataset/ner_dataset.csv') as f:
+        reader = csv.reader(f, delimiter='|')
+        for line in reader:
+            line = line[0].split(';')
+            # print(line)
+            # print(line[0], line[1], line[2], line[3], current_key)
+            if ("Sentence" in line[0]):
+                current_key = line[0]
+                english_ner_dataset[current_key] = [[line[1], line[2], line[3]]]
+            else:
+                english_ner_dataset[current_key].append([line[1], line[2], line[3]])
 
-# for k,v in english_ner_dataset.iteritems():
-#     print k, v
-#     print
+    # for k,v in english_ner_dataset.iteritems():
+    #     print k, v
+    #     print
 
 def makeSentenceFromDict(dict):
     texts = []
@@ -31,12 +32,11 @@ def makeSentenceFromDict(dict):
             tag = v[2]
             # Concatinate words to a sentence:
             if len(word) > 0:
-                s = s[0:-1] + word + " " if word[0] in ".,'" else s + word + " "
+                s = s[0:-1] + word + ' ' if word[0] in '.,\'' else s + word + ' '
 
         #key, sentence, list of named entities
         texts.append([key, s, named_entities])
 
-    print texts[0]
     return texts
 
 def findNamedEntitiesInValue(value):
@@ -48,7 +48,7 @@ def findNamedEntitiesInValue(value):
         tag = v[2]
 
         if tag[-3:] in ner_tags:
-            if tag[0] == 'B': # B for beginning of named entity, I if a part of previous word.
+            if tag[0] == 'B': # 'B'for beginning of named entity, 'I' if a part of previous word.
                 if len(named_entity):
                     named_entities.append(named_entity)
                 named_entity = word
@@ -62,11 +62,17 @@ def findNamedEntitiesInValue(value):
 
 
 
+def english_dataset_main():
+    english_ner_dataset = read_english_dataset()
 
+    texts = makeSentenceFromDict(english_ner_dataset)
 
-makeSentenceFromDict(english_ner_dataset)
-print findNamedEntitiesInValue(english_ner_dataset["Sentence: 1"])
+    # print texts[0]
+    # print findNamedEntitiesInValue(english_ner_dataset["Sentence: 1"])
 
+    return texts
+
+# english_dataset_main()
 
 # geo = Geographical Entity
 # org = Organization

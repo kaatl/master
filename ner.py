@@ -15,7 +15,8 @@ def nltkNER(sentence):
     tokens = nltk.word_tokenize(sentence)
     pos_tags = nltk.pos_tag(tokens)
     chunked = nltk.ne_chunk(pos_tags, binary=False)
-    print getNERList(chunked), '\n'
+    named_entities = getNERList(chunked)
+    print colored(named_entities, "green")
 
 # Returnerer en liste med Named Entities fra en tweet (for nltk)
 def getNERList(chunked):
@@ -39,25 +40,30 @@ def getNERList(chunked):
     # print
     return continuous_chunk
 
-
 """
 ***** STANFORD CORENLP *****
 """
 # java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
 nlp = StanfordCoreNLP('http://localhost:9000')
+error_sentences = []
 
-def stanfordCoreNLPNER(sentence, lang):
+def stanfordCoreNLPNER(sentence):
+    lang = 'en'
     print colored('\n=========Stanford CoreNLP======\n', 'blue')
     print sentence
     if (lang == 'en'):
-        output = nlp.annotate(sentence, properties={
-            # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
-            'annotators': 'ner',
-            'outputFormat': 'json'
-        })
+        try:
+            output = nlp.annotate(sentence, properties={
+                # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
+                'annotators': 'ner',
+                'outputFormat': 'json'
+            })
 
-        # print(output['sentences'][0]['parse'])
-        print getCoreNLPList(output['sentences'][0]['tokens'])
+            # print(output['sentences'][0]['parse'])
+            named_entities = getCoreNLPList(output['sentences'][0]['tokens'])
+            print colored(named_entities, "green")
+        except UnicodeDecodeError:
+            error_sentences.append(sentence)
 
 def getCoreNLPList(tokens):
     named_entities = []
@@ -93,24 +99,28 @@ def getCoreNLPList(tokens):
 ***** POLYGLOT *****
 """
 
-def polyglotNER(sentence, lang):
+def polyglotNER(sentence):
     print colored('\n========POLYGLOT========\n', 'blue')
     print sentence
-    if (lang == 'no'):
-        text = Text(sentence, hint_language_code='no')
-    else:
-        text = Text(sentence, hint_language_code='en')
+    text = Text(sentence, hint_language_code='no')
+    # text = Text(sentence, hint_language_code='en')
 
+    named_entities = []
     for entity in text.entities:
-        print entity.tag, entity
+        # print entity.tag, entity
+        named_entities.append(entity)
 
+    print colored(named_entities, "green")
 
 
 def runNER(texts):
-    print texts
-    for text in texts:
-        print colored('\n\n\n\n NEW TWEET \n\n', 'green')
-        print colored(text[1], 'cyan'), '\n'
-        nltkNER(text[0])
-        stanfordCoreNLPNER(text[0], text[2])
-        polyglotNER(text[0], text[2])
+    for t in texts:
+        text = t[1]
+        # print colored('\n\n\n\n NEW TWEET \n\n', 'green')
+        print '\n', t[0], '\n', colored(text, 'cyan'), '\n'
+        print t[2]
+        nltkNER(text)
+        stanfordCoreNLPNER(text)
+        polyglotNER(text)
+
+    print error_sentences
