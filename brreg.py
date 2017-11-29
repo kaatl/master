@@ -11,7 +11,7 @@ colnames = ['organisasjonsnummer','navn','stiftelsesdato','registreringsdatoEnhe
 'naeringskode3.beskrivelse','postadresse.adresse','postadresse.postnummer','postadresse.poststed','postadresse.kommunenummer','postadresse.kommune','postadresse.landkode','postadresse.land','forretningsadresse.adresse','forretningsadresse.postnummer','forretningsadresse.poststed','forretningsadresse.kommunenummer','forretningsadresse.kommune','forretningsadresse.landkode','forretningsadresse.land','sisteInnsendteAarsregnskap','konkurs','underAvvikling',
 'underTvangsavviklingEllerTvangsopplosning','overordnetEnhet','målform','orgform.kode','orgform.beskrivelse']
 data = pandas.read_csv('brreg1_utf8 (1).csv', sep=';', names=colnames, low_memory=False)
-
+#Dette er gitt datasettet brreg1_utf8 (1).csv. Endres hvis annet datasett.
 
 navn = data.navn.tolist()
 ansatte = data.antallAnsatte.tolist()
