@@ -102,8 +102,11 @@ def getCoreNLPList(tokens):
 def polyglotNER(sentence):
     print colored('\n========POLYGLOT========\n', 'blue')
     print sentence
-    text = Text(sentence, hint_language_code='no')
-    # text = Text(sentence, hint_language_code='en')
+    # text = Text(sentence, hint_language_code='no')
+    try:
+        text = Text(sentence, hint_language_code='en')
+    except UnicodeDecodeError:
+        error_sentences.append(sentence)
 
     named_entities = []
     for entity in text.entities:
