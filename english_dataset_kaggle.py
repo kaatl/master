@@ -46,7 +46,7 @@ def findNamedEntitiesInValue(value):
     named_entities = []
 
     for v in value:
-        word = v[0]
+        word = v[0].lower()
         tag = v[2]
 
         if tag[-3:] in ner_tags:

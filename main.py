@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import timeit
+import time
 import sys
 sys.dont_write_bytecode = True # For å unngå .pyc metafiler
 
@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True # For å unngå .pyc metafiler
 from ner import runNER # Runs NLTK, Stanford, and Polyglot
 from tweepy_collect_data import collect_data # Collect twitterdata, tweepy
 from english_dataset_kaggle import english_dataset_main
-from f1score.py import F1_score
+from f1score import F1_score
 
 
 
@@ -20,9 +20,9 @@ from f1score.py import F1_score
 texts = english_dataset_main()
 
 # Run NLTK, Stanford, and Polyglot
-start = timeit.timeit()
+start = time.time()
 runNER(texts)
-end = timeit.timeit()
+end = time.time()
 
 # Prints elapsed time
 print "Time: ", (end-start)

@@ -29,7 +29,7 @@ def getNERList(chunked):
         elif current_chunk:
             named_entity = ' '.join(current_chunk)
             if named_entity not in continuous_chunk:
-                continuous_chunk.append(named_entity)
+                continuous_chunk.append(named_entity.lower())
                 current_chunk = []
         else:
             continue
@@ -90,7 +90,7 @@ def getCoreNLPList(tokens):
                 token_count += 1
             if named_entity != '':
                 named_entity = named_entity.split(',')
-                named_entities.append(named_entity)
+                named_entities.append(named_entity[1].encode("utf8"))
     return named_entities
 
 
@@ -105,15 +105,18 @@ def polyglotNER(sentence, sentence_id):
     # text = Text(sentence, hint_language_code='no')
     try:
         text = Text(sentence, hint_language_code='en')
+        named_entities = []
+        for entity in text.entities:
+            # print entity.tag, entity
+            # print entity[0] + " " + entity[1]
+            name = " ".join(n.encode("utf8") for n in entity)
+            named_entities.append(name.lower())
+
+        print colored(named_entities, "green")
     except UnicodeDecodeError, UnboundLocalError:
         error_sentences.append(sentence_id)
 
-    named_entities = []
-    for entity in text.entities:
-        # print entity.tag, entity
-        named_entities.append(entity)
 
-    print colored(named_entities, "green")
 
 
 def runNER(texts):
@@ -127,3 +130,8 @@ def runNER(texts):
         polyglotNER(text, t[0])
 
     print "\n ERROR MESSAGES:", error_sentences
+
+# runNER([[1, "Donald Trump happened with Chandler Bing", ["Donald Trump"]]])
+
+
+#8332
