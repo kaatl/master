@@ -47,7 +47,7 @@ def getNERList(chunked):
 nlp = StanfordCoreNLP('http://localhost:9000')
 error_sentences = []
 
-def stanfordCoreNLPNER(sentence):
+def stanfordCoreNLPNER(sentence, sentence_id):
     lang = 'en'
     print colored('\n=========Stanford CoreNLP======\n', 'blue')
     print sentence
@@ -63,7 +63,7 @@ def stanfordCoreNLPNER(sentence):
             named_entities = getCoreNLPList(output['sentences'][0]['tokens'])
             print colored(named_entities, "green")
         except UnicodeDecodeError:
-            error_sentences.append(sentence)
+            error_sentences.append(sentence_id)
 
 def getCoreNLPList(tokens):
     named_entities = []
@@ -99,14 +99,14 @@ def getCoreNLPList(tokens):
 ***** POLYGLOT *****
 """
 
-def polyglotNER(sentence):
+def polyglotNER(sentence, sentence_id):
     print colored('\n========POLYGLOT========\n', 'blue')
     print sentence
     # text = Text(sentence, hint_language_code='no')
     try:
         text = Text(sentence, hint_language_code='en')
-    except UnicodeDecodeError:
-        error_sentences.append(sentence)
+    except UnicodeDecodeError, UnboundLocalError:
+        error_sentences.append(sentence_id)
 
     named_entities = []
     for entity in text.entities:
@@ -120,10 +120,10 @@ def runNER(texts):
     for t in texts:
         text = t[1]
         # print colored('\n\n\n\n NEW TWEET \n\n', 'green')
-        print '\n', t[0], '\n', colored(text, 'cyan'), '\n'
-        print t[2]
+        print '\n', t[0], '\n', colored(text, 'cyan')
+        print t[2], '\n'
         nltkNER(text)
-        stanfordCoreNLPNER(text)
-        polyglotNER(text)
+        stanfordCoreNLPNER(text, t[0])
+        polyglotNER(text, t[0])
 
-    print error_sentences
+    print "\n ERROR MESSAGES:", error_sentences

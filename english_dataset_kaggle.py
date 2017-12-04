@@ -9,17 +9,19 @@ def read_english_dataset():
         reader = csv.reader(f, delimiter='|')
         for line in reader:
             line = line[0].split(';')
-            # print(line)
-            # print(line[0], line[1], line[2], line[3], current_key)
+
+            word = line[1]
+
+            if "\uFFFD" in word:
+                word.replace("\uFFFD", "")
+            if "??_" in word:
+                word.replace("??_", "")
+
             if ("Sentence" in line[0]):
                 current_key = line[0]
-                english_ner_dataset[current_key] = [[line[1], line[2], line[3]]]
+                english_ner_dataset[current_key] = [[word, line[2], line[3]]]
             else:
-                english_ner_dataset[current_key].append([line[1], line[2], line[3]])
-
-    # for k,v in english_ner_dataset.iteritems():
-    #     print k, v
-    #     print
+                english_ner_dataset[current_key].append([word, line[2], line[3]])
 
 def makeSentenceFromDict(dict):
     texts = []
@@ -78,3 +80,5 @@ def english_dataset_main():
 # org = Organization
 # per = Person
 # gpe = Geopolitical Entity
+
+# Datasettet har ikke annotert eks. "New York-based" (45838) som en entity, heller ikke "Taiwan"

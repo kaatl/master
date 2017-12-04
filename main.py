@@ -9,6 +9,7 @@ sys.dont_write_bytecode = True # For å unngå .pyc metafiler
 from ner import runNER # Runs NLTK, Stanford, and Polyglot
 from tweepy_collect_data import collect_data # Collect twitterdata, tweepy
 from english_dataset_kaggle import english_dataset_main
+from f1score.py import F1_score
 
 
 
