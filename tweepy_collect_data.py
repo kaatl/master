@@ -36,7 +36,7 @@ def collect_data():
     "virkelig","elsker","tok","burde","vår","nu","hit","uten","veldig","død","finne","beklager","mor","står","livet","trodde","ingenting","snakker","sin","akkurat","gikk","kveld",
     "nej","samme","først","hør","kjenner",]
 
-    f = open("collected_data_twitter.txt", "a")
+    f = open("dataset/collected_data_twitter.txt", "a")
     tweets_id = []
     print "Iterating through common words"
     for i in range(1): # index of the common words, får rate limit på 180 kall hvert 15 minutt. https://developer.twitter.com/en/docs/basics/rate-limiting

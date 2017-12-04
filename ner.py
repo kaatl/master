@@ -15,7 +15,8 @@ def nltkNER(sentence):
     tokens = nltk.word_tokenize(sentence)
     pos_tags = nltk.pos_tag(tokens)
     chunked = nltk.ne_chunk(pos_tags, binary=False)
-    print getNERList(chunked), '\n'
+    named_entities = getNERList(chunked)
+    print colored(named_entities, "green")
 
 # Returnerer en liste med Named Entities fra en tweet (for nltk)
 def getNERList(chunked):
@@ -28,7 +29,7 @@ def getNERList(chunked):
         elif current_chunk:
             named_entity = ' '.join(current_chunk)
             if named_entity not in continuous_chunk:
-                continuous_chunk.append(named_entity)
+                continuous_chunk.append(named_entity.lower())
                 current_chunk = []
         else:
             continue
@@ -39,25 +40,30 @@ def getNERList(chunked):
     # print
     return continuous_chunk
 
-
 """
 ***** STANFORD CORENLP *****
 """
 # java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
 nlp = StanfordCoreNLP('http://localhost:9000')
+error_sentences = []
 
-def stanfordCoreNLPNER(sentence, lang):
+def stanfordCoreNLPNER(sentence, sentence_id):
+    lang = 'en'
     print colored('\n=========Stanford CoreNLP======\n', 'blue')
     print sentence
     if (lang == 'en'):
-        output = nlp.annotate(sentence, properties={
-            # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
-            'annotators': 'ner',
-            'outputFormat': 'json'
-        })
+        try:
+            output = nlp.annotate(sentence, properties={
+                # 'annotators': 'tokenize,ssplit,pos,depparse,parse',
+                'annotators': 'ner',
+                'outputFormat': 'json'
+            })
 
-        # print(output['sentences'][0]['parse'])
-        print getCoreNLPList(output['sentences'][0]['tokens'])
+            # print(output['sentences'][0]['parse'])
+            named_entities = getCoreNLPList(output['sentences'][0]['tokens'])
+            print colored(named_entities, "green")
+        except UnicodeDecodeError:
+            error_sentences.append(sentence_id)
 
 def getCoreNLPList(tokens):
     named_entities = []
@@ -84,7 +90,7 @@ def getCoreNLPList(tokens):
                 token_count += 1
             if named_entity != '':
                 named_entity = named_entity.split(',')
-                named_entities.append(named_entity)
+                named_entities.append(named_entity[1].encode("utf8"))
     return named_entities
 
 
@@ -93,24 +99,39 @@ def getCoreNLPList(tokens):
 ***** POLYGLOT *****
 """
 
-def polyglotNER(sentence, lang):
+def polyglotNER(sentence, sentence_id):
     print colored('\n========POLYGLOT========\n', 'blue')
     print sentence
-    if (lang == 'no'):
-        text = Text(sentence, hint_language_code='no')
-    else:
+    # text = Text(sentence, hint_language_code='no')
+    try:
         text = Text(sentence, hint_language_code='en')
+        named_entities = []
+        for entity in text.entities:
+            # print entity.tag, entity
+            # print entity[0] + " " + entity[1]
+            name = " ".join(n.encode("utf8") for n in entity)
+            named_entities.append(name.lower())
 
-    for entity in text.entities:
-        print entity.tag, entity
+        print colored(named_entities, "green")
+    except UnicodeDecodeError, UnboundLocalError:
+        error_sentences.append(sentence_id)
+
 
 
 
 def runNER(texts):
-    print texts
-    for text in texts:
-        print colored('\n\n\n\n NEW TWEET \n\n', 'green')
-        print colored(text[1], 'cyan'), '\n'
-        nltkNER(text[0])
-        stanfordCoreNLPNER(text[0], text[2])
-        polyglotNER(text[0], text[2])
+    for t in texts:
+        text = t[1]
+        # print colored('\n\n\n\n NEW TWEET \n\n', 'green')
+        print '\n', t[0], '\n', colored(text, 'cyan')
+        print t[2], '\n'
+        nltkNER(text)
+        stanfordCoreNLPNER(text, t[0])
+        polyglotNER(text, t[0])
+
+    print "\n ERROR MESSAGES:", error_sentences
+
+# runNER([[1, "Donald Trump happened with Chandler Bing", ["Donald Trump"]]])
+
+
+#8332
