@@ -8,12 +8,15 @@ def F1_score(test_set, solution_set):
     for name in solution_set:
         if name in test_set:
             tp += 1.0
-        elif name not in test_set:
-            fn += 1.0
-
-    for name in test_set:
-        if name not in solution_set:
-            fp += 1.0
+        else:
+            for value in test_set:
+                if value in name:
+                    tp += 1
+                elif name not in test_set:
+                    fn += 1.0
+                else:
+                    if value not in solution_set:
+                        fp += 1.0
 
     try:
         precision = tp / (tp + fp)
@@ -24,7 +27,9 @@ def F1_score(test_set, solution_set):
     except ZeroDivisionError:
         return 0
 
+    print tp, fp, fn
     return f1_score
 
 
-print F1_score(["c", "e", "f"], ["ab", "b", "d"])
+# print F1_score(["ab", "c"], ["ab", "e"])
+# print F1_score(["donald trump"], ["president donald trump"])
