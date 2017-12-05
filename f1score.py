@@ -1,35 +1,37 @@
-def F1_score(test_set, solution_set):
+def F1_score(test_list, solution_list):
     tp, fp, fn = 0, 0, 0 # Ikke interessert i true negative
 
-    if len(solution_set) == 0 and len(test_set) == 0:
+    if len(solution_list) == 0 and len(test_list) == 0:
         return 1
 
+    for solution_value in solution_list:
+        s_list = solution_value.split()
 
-    for name in solution_set:
-        if name in test_set:
+        match = [t for t in test_list if any(s in t for s in s_list)]
+
+        if match:
             tp += 1.0
         else:
-            for value in test_set:
-                if value in name:
-                    tp += 1
-                elif name not in test_set:
-                    fn += 1.0
-                else:
-                    if value not in solution_set:
-                        fp += 1.0
+            fn += 1.0
+
+    for test_value in test_list:
+        t_list = test_value.split()
+
+        match = [s for s in solution_list if any(t in s for t in t_list)]
+
+        if not match:
+            fp += 1.0
 
     try:
         precision = tp / (tp + fp)
         recall = tp / (tp + fn)
 
-
-        f1_score = 2 * (precision * recall) / (precision + recall)
+        # print tp, fp, fn
+        return (2 * (precision * recall) / (precision + recall))
     except ZeroDivisionError:
         return 0
 
-    print tp, fp, fn
-    return f1_score
 
-
-# print F1_score(["ab", "c"], ["ab", "e"])
+# print F1_score(["ab", "c", "f"], ["ab", "c", "e"])
 # print F1_score(["donald trump"], ["president donald trump"])
+# print F1_score(["president donald trump"], ["donald trump"])
