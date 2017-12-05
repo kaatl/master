@@ -10,4 +10,4 @@ for s in res["sentences"]:
     print "%d: '%s': %s %s" % (
         s["index"],
         " ".join([t["word"] for t in s["tokens"]]),
-        s["sentimentValue"], s["sentqiment"])
+        s["sentimentValue"], s["sentiment"])
