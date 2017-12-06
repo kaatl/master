@@ -11,3 +11,5 @@ for s in res["sentences"]:
         s["index"],
         " ".join([t["word"] for t in s["tokens"]]),
         s["sentimentValue"], s["sentiment"])
+
+#Se denne linken for start av server osv https://stackoverflow.com/questions/32879532/stanford-nlp-for-python

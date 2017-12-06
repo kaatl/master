@@ -26,10 +26,20 @@ def translateTweet(tweet):
 #     "@Ivarserdeg Om du ikke ser at det er en moralsk pekefinger som gir skylden til henne så er jeg veldig overrasket."
 # ]
 
-with open('dataset/test_twitter_data.txt', 'r') as f:
-    content = f.readlines()
+# with open('dataset/collected_data_twitter.txt', 'r') as f:
+#     content = f.readlines()
+#
+#
+# for tweet in content:
+#     print tweet
+#     translated_tweet = translateTweet(tweet)
+#     print translated_tweet
+#     print "-------"
+#
+#     try: translated_tweet = translated_tweet.encode("utf8")
+#     except AttributeError: translated_tweet
+#     with open('dataset/collected_data_twitter_english.txt', 'a') as file:
+#         file.write(str(translated_tweet) + "\n")
 
-for tweet in content:
-    print tweet
-    print translateTweet(tweet)
-    print "-------"
+
+print translateTweet("""Har feira vern av 10 unike skoger med Hans-Petter #Jacobsen i NRK p1+! Gikk du glipp av det hør det her, @VidarHelgesen """)
