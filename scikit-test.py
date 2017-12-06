@@ -35,10 +35,15 @@ for index, row in train.iterrows():
     words_without_stopwords = [word for word in words_cleaned if not word in stopwords_set]
     tweets.append((words_cleaned,row.sentiment))
 
-train_pos = train[ train['sentiment'] == 'Positive']
-train_pos = train_pos['text']
-train_neg = train[ train['sentiment'] == 'Negative']
-train_neg = train_neg['text']
+#train_pos = train[ train['sentiment'] == 'Positive']
+#train_pos = train_pos['text']
+#train_neg = train[ train['sentiment'] == 'Negative']
+#train_neg = train_neg['text']
+
+test_pos = test[ test['sentiment'] == 'Positive']
+test_pos = test_pos['text']
+test_neg = test[ test['sentiment'] == 'Negative']
+test_neg = test_neg['text']
 
 # Extracting word features
 def get_words_in_tweets(tweets):
@@ -62,19 +67,22 @@ def extract_features(document):
     return features
 
 training_set = nltk.classify.apply_features(extract_features,tweets)
-print training_set
 classifier = nltk.NaiveBayesClassifier.train(training_set)
-print "ferdig"
-#neg_cnt = 0
-#pos_cnt = 0
-#for obj in test_neg:
-#    res =  classifier.classify(extract_features(obj.split()))
-#    if(res == 'Negative'):
-#        neg_cnt = neg_cnt + 1
-#for obj in test_pos:
-#    res =  classifier.classify(extract_features(obj.split()))
-#    if(res == 'Positive'):
-#        pos_cnt = pos_cnt + 1
+
+neg_cnt = []
+pos_cnt = []
+pos_cntS = 0
+pos_cntS = 0
+for obj in test_neg:
+    res =  classifier.classify(extract_features(obj.split()))
+    if(res == 'Negative'):
+        neg_cnt.append(obj)
+for obj in test_pos:
+    res =  classifier.classify(extract_features(obj.split()))
+    if(res == 'Positive'):
+        pos_cnt.append(obj)
+print 'Negative', neg_cnt
+print 'Positive', pos_cnt
 
 #print('[Negative]: %s/%s '  % (len(test_neg),neg_cnt))
 #print('[Positive]: %s/%s '  % (len(test_pos),pos_cnt))
