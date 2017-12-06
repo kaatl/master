@@ -26,10 +26,14 @@ def translateTweet(tweet):
 #     "@Ivarserdeg Om du ikke ser at det er en moralsk pekefinger som gir skylden til henne så er jeg veldig overrasket."
 # ]
 
-with open('dataset/test_twitter_data.txt', 'r') as f:
+with open('dataset/collected_data_twitter.txt', 'r') as f:
     content = f.readlines()
+
 
 for tweet in content:
     print tweet
-    print translateTweet(tweet)
+    translated_tweet = translateTweet(tweet)
+    print translated_tweet
     print "-------"
+    with open('dataset/collected_data_twitter_english.txt', 'a') as file:
+        file.write(translated_tweet.encode("utf8") + "\n")
