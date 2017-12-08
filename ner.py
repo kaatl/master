@@ -139,17 +139,17 @@ def runNER(texts):
         named_entities['stanford'] = stanford
         named_entities['polyglot'] = polyglot
 
-        with open ('ner_result.txt', 'a') as file:
-            file.write(t[0] + ";" + str(t[2]) + ";" + str(nltk) + ";" + str(stanford) + ";" + str(polyglot) + "\n")
+        # with open ('ner_result.txt', 'a') as file:
+        #     file.write(t[0] + ";" + str(t[2]) + ";" + str(nltk) + ";" + str(stanford) + ";" + str(polyglot) + "\n")
             # e('\n')
-
+    print named_entities
     return named_entities
 
     # print "\n ERROR MESSAGES:", error_sentences
 
 
 
-# runNER([[1, "Donald Trump happened with Chandler Bing", ["Donald Trump"]],[1, "Tonald Drump happened with Chandler Bing", ["Donald Trump"]]])
+runNER([[1, """WH chief of staff John Kelly says he will "absolutely not" apologize for comments about Rep. Frederica Wilson""", ["WH", "John Kelly", "Fredrica Wilson"]]])
 
 
 #8332

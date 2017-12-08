@@ -6,11 +6,11 @@ def F1_score(solution_list, test_list):
 
     if len(solution_list[0]) == 0 and len(test_list[0]) == 0:
         print 1.0
-        return 1.0
+        return [1.0, 1.0, 1.0]
 
     if len(solution_list[0]) > 0 and len(test_list[0]) == 0:
         print 0.0
-        return 0.0
+        return [0.0, 0.0, 0.0]
 
     for solution_value in solution_list:
         s_list = solution_value.split()
@@ -58,9 +58,9 @@ def F1_score(solution_list, test_list):
         precision = tp / (tp + fp)
         recall = tp / (tp + fn)
         print "score", 2 * (precision * recall) / (precision + recall)
-        return (2 * (precision * recall) / (precision + recall))
+        return [(2 * (precision * recall) / (precision + recall)), precision, recall]
     except ZeroDivisionError:
-        return 0.0
+        return [0.0, 0.0, 0.0]
 
 
 
@@ -71,3 +71,15 @@ def F1_score(solution_list, test_list):
 # print F1_score(["president donald trump"], ["president"])
 # print F1_score(["president donald trump"], ["donald trump"])
 # print F1_score(['president chen shui-bian', 'taipei', 'china'], ['taiwan', 'chen shui-bian', 'taipei', 'china'])
+
+print F1_score(['wh', 'john kelly', 'fredrica wilson'], ['john kelly'])
+print F1_score(['wh', 'john kelly', 'fredrica wilson'], ['wh', 'john kelly', 'frederica wilson'])
+print F1_score(['wh', 'john kelly', 'fredrica wilson'], ['john kelly', 'frederica wilson'])
+
+
+
+
+
+
+#
+# {'polyglot': ['john kelly', 'frederica wilson'], 'stanford': ['wh', 'john kelly', 'frederica wilson'], 'solution': ['WH', 'John Kelly', 'Fredrica Wilson'], 'nltk': ['john kelly']}
