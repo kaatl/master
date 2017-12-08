@@ -14,11 +14,13 @@ import matplotlib.pyplot as plt
 
 from subprocess import check_output
 
-data = pd.read_csv('Sentiment.csv')
-data = data[['text','sentiment']]
+data = pd.read_csv('dataset/sentiment1.csv')
+testData = pd.read_csv('dataset/test.csv')
+train = data[['text','sentiment']]
+#test = testData[['text']]
 
 # Splitting the dataset into train and test set
-train, test = train_test_split(data,test_size = 0.01)
+#train, test = train_test_split(data, testData)
 # Removing neutral sentiments
 train = train[train.sentiment != "Neutral"]
 
@@ -40,10 +42,10 @@ for index, row in train.iterrows():
 #train_neg = train[ train['sentiment'] == 'Negative']
 #train_neg = train_neg['text']
 
-test_pos = test[ test['sentiment'] == 'Positive']
-test_pos = test_pos['text']
-test_neg = test[ test['sentiment'] == 'Negative']
-test_neg = test_neg['text']
+#test_pos = test[ test['sentiment'] == 'Positive']
+#test_pos = test['text']
+#test_neg = test[ test['sentiment'] == 'Negative']
+#test_neg = test['text']
 
 # Extracting word features
 def get_words_in_tweets(tweets):
@@ -69,41 +71,48 @@ def extract_features(document):
 training_set = nltk.classify.apply_features(extract_features,tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-neg_cnt = []
-pos_cnt = []
-pos_cntS = 0
-pos_cntS = 0
-for obj in test_neg:
-    res =  classifier.classify(extract_features(obj.split()))
-    if(res == 'Negative'):
-        neg_cnt.append(obj)
-for obj in test_pos:
-    res =  classifier.classify(extract_features(obj.split()))
-    if(res == 'Positive'):
-        pos_cnt.append(obj)
-print 'Negative', neg_cnt
-print 'Positive', pos_cnt
+test_sentence = "This is the worst band I've ever heard!"
+#test_sent_features = {word.lower(): (word in word_tokenize(test_sentence.lower())) for word in all_words}
+
+print classifier.classify(extract_features(test_sentence.split()))
+
+#neg_cnt = []
+#pos_cnt = []
+#pos_cntS = 0
+#pos_cntS = 0
+#for obj in test_neg:
+#    res =  classifier.classify(extract_features(obj.split()))
+#    print res
+#    if(res == 'Negative'):
+#        neg_cnt.append(obj)
+#for obj in test_pos:
+#    res =  classifier.classify(extract_features(obj.split()))
+#    print 'positive', res
+#    if(res == 'Positive'):
+#        pos_cnt.append(obj)
+#print 'Negative', neg_cnt
+#print 'Positive', pos_cnt
 
 #print('[Negative]: %s/%s '  % (len(test_neg),neg_cnt))
 #print('[Positive]: %s/%s '  % (len(test_pos),pos_cnt))
 
-def wordcloud_draw(data, color = 'black'):
-    words = ' '.join(data)
-    cleaned_word = " ".join([word for word in words.split()
-                            if 'http' not in word
-                                and not word.startswith('@')
-                                and not word.startswith('#')
-                                and word != 'RT'
-                            ])
-    wordcloud = WordCloud(stopwords=STOPWORDS,
-                      background_color=color,
-                      width=1500,
-                      height=1000
-                     ).generate(cleaned_word)
-    plt.figure(1,figsize=(13, 13))
-    plt.imshow(wordcloud)
-    plt.axis('off')
-    plt.show()
+#def wordcloud_draw(data, color = 'black'):
+#    words = ' '.join(data)
+#    cleaned_word = " ".join([word for word in words.split()
+#                            if 'http' not in word
+#                                and not word.startswith('@')
+#                                and not word.startswith('#')
+#                                and word != 'RT'
+#                            ])
+#    wordcloud = WordCloud(stopwords=STOPWORDS,
+#                      background_color=color,
+#                      width=1500,
+#                      height=1000
+#                     ).generate(cleaned_word)
+#    plt.figure(1,figsize=(13, 13))
+#    plt.imshow(wordcloud)
+#    plt.axis('off')
+#    plt.show()
 
 #print wordcloud_draw(w_features)
 
