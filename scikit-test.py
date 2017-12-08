@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split # function for splitting data to train and test sets
 
 import nltk
 from nltk.tokenize import word_tokenize
@@ -10,18 +9,15 @@ from nltk.classify import SklearnClassifier
 
 from wordcloud import WordCloud,STOPWORDS
 import matplotlib.pyplot as plt
-#%matplotlib inline
 
 from subprocess import check_output
 
 data = pd.read_csv('dataset/sentiment1.csv')
-testData = pd.read_csv('dataset/test.csv')
+testData = pd.read_csv('dataset/sentiment1.csv')
 train = data[['text','sentiment']]
-#test = testData[['text']]
+test = testData[['text']]
 
-# Splitting the dataset into train and test set
-#train, test = train_test_split(data, testData)
-# Removing neutral sentiments
+# Fjerner alle noytrale tweets
 train = train[train.sentiment != "Neutral"]
 
 tweets = []
@@ -37,21 +33,9 @@ for index, row in train.iterrows():
     words_without_stopwords = [word for word in words_cleaned if not word in stopwords_set]
     tweets.append((words_cleaned,row.sentiment))
 
-#train_pos = train[ train['sentiment'] == 'Positive']
-#train_pos = train_pos['text']
-#train_neg = train[ train['sentiment'] == 'Negative']
-#train_neg = train_neg['text']
-
-#test_pos = test[ test['sentiment'] == 'Positive']
-#test_pos = test['text']
-#test_neg = test[ test['sentiment'] == 'Negative']
-#test_neg = test['text']
-
-# Extracting word features
 def get_words_in_tweets(tweets):
     all = []
     for (words, sentiment) in tweets:
-        #The method extend() appends the contents of seq to list.
         all.extend(words)
     return all
 
@@ -59,22 +43,24 @@ def get_word_features(wordlist):
     wordlist = nltk.FreqDist(wordlist)
     features = wordlist.keys()
     return features
+
 w_features = get_word_features(get_words_in_tweets(tweets))
+
 
 def extract_features(document):
     document_words = set(document)
     features = {}
     for word in w_features:
-        features[word] = (word in document_words)
+        features['contains({})'.format(word)] = (word in document_words)
     return features
 
 training_set = nltk.classify.apply_features(extract_features,tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-test_sentence = "This is the worst band I've ever heard!"
-#test_sent_features = {word.lower(): (word in word_tokenize(test_sentence.lower())) for word in all_words}
-
+test_sentence = """Bromwell High is a cartoon comedy. It ran at the same time as some other programs about school life, such as "Teachers". My 35 years in the teaching profession lead me to believe that Bromwell High's satire is much closer to reality than is "Teachers". The scramble to survive financially, the insightful students who can see right through their pathetic teachers' pomp, the pettiness of the whole situation, all remind me of the schools I knew and their students. When I saw the episode in which a student repeatedly tried to burn down the school, I immediately recalled ......... at .......... High. A classic line: INSPECTOR: I'm here to sack one of your teachers. STUDENT: Welcome to Bromwell High. I expect that many adults of my age think that Bromwell High is far fetched. What a pity that it isn't!"""
 print classifier.classify(extract_features(test_sentence.split()))
+
+#print classifier.classify(extract_features(test_sentence.split()))
 
 #neg_cnt = []
 #pos_cnt = []
