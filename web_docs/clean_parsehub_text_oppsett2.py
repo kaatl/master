@@ -37,6 +37,7 @@ def append_to_tsv(title, text, url):
 
 bergensTidende = 'bergesTidende_results.json'
 stavangerAftenblad = 'stavangerAftenblad_resultat.json'
+dagensNaeringsliv = 'dn_resultater.json'
 
 read_file(stavangerAftenblad)
 
