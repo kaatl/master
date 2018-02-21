@@ -40,8 +40,10 @@ nrk = 'parsehub_nrk_63.json'
 nrk_dok = 'parsehub_nrkdok_93.json'
 politiet = 'parsehub_politiet_150.json'
 politilogg = 'parsehub_politilogg_72.json'
+adressa = 'parsehub_adressa_79.json'
+dt = 'parsehub_dt_47.json'
 
-# read_file(politilogg)
+# read_file(dt)
 
 
 # Data gathered 23. januar - 25.januar ish
