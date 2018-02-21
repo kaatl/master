@@ -6,7 +6,7 @@ import json
 def read_file(filename):
 
     data = json.load(open(filename))
-    articles = data['Artikkel']
+    articles = data['Overskrift']
 
     for article in articles:
         title = article['name']
@@ -17,8 +17,8 @@ def read_file(filename):
             text = article['subtitle'] + ' '
 
 
-        if 'artikkel' in article:
-            paragraph = article['artikkel']
+        if 'innhold' in article:
+            paragraph = article['innhold']
 
             for p in paragraph:
                 text +=  p['paragraph'] + ' '
@@ -37,8 +37,9 @@ def append_to_tsv(title, text, url):
 
 bergensTidende = 'bergesTidende_results.json'
 stavangerAftenblad = 'stavangerAftenblad_resultat.json'
+dagensNaeringsliv = 'dn_resultater.json'
 
-read_file(stavangerAftenblad)
+read_file(dagensNaeringsliv)
 
 
 # Data gathered 23. januar - 25.januar ish
