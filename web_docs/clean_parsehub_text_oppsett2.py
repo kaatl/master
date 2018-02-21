@@ -6,7 +6,7 @@ import json
 def read_file(filename):
 
     data = json.load(open(filename))
-    articles = data['Overskrift']
+    articles = data['Artikkel']
 
     for article in articles:
         title = article['name']
@@ -17,8 +17,8 @@ def read_file(filename):
             text = article['subtitle'] + ' '
 
 
-        if 'innhold' in article:
-            paragraph = article['innhold']
+        if 'artikkel' in article:
+            paragraph = article['artikkel']
 
             for p in paragraph:
                 text +=  p['paragraph'] + ' '
@@ -39,7 +39,7 @@ bergensTidende = 'bergesTidende_results.json'
 stavangerAftenblad = 'stavangerAftenblad_resultat.json'
 dagensNaeringsliv = 'dn_resultater.json'
 
-read_file(dagensNaeringsliv)
+read_file(stavangerAftenblad)
 
 
 # Data gathered 23. januar - 25.januar ish
