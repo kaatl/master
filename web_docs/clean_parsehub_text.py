@@ -37,13 +37,15 @@ def append_to_tsv(title, text, url):
 
 aftenposten = 'parsehub_aftenposten_92.json'
 nrk = 'parsehub_nrk_63.json'
+nrk2 = 'parsehub_nrk2_63.json'
 nrk_dok = 'parsehub_nrkdok_93.json'
 politiet = 'parsehub_politiet_150.json'
 politilogg = 'parsehub_politilogg_72.json'
 adressa = 'parsehub_adressa_79.json'
 dt = 'parsehub_dt_47.json'
 
-# read_file(dt)
+
+read_file(nrk2)
 
 
 # Data gathered 23. januar - 25.januar ish
