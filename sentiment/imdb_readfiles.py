@@ -31,5 +31,5 @@ for path in dir_list_pos:
 
 print positive_sentiment_dataset
 
-with open('dataset/imdb_sentiment.txt', 'a') as f:
+with open('../dataset/imdb_sentiment.txt', 'a') as f:
     f.write(positive_sentiment_dataset)

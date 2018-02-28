@@ -5,7 +5,7 @@ ner_tags = ['geo', 'org', 'per', 'gpe']
 
 def read_english_dataset():
     current_key = ""
-    with file('dataset/ner_dataset.csv') as f:
+    with file('../dataset/ner_dataset.csv') as f:
         reader = csv.reader(f, delimiter='|')
         for line in reader:
             line = line[0].split(';')

@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from subprocess import check_output
 
-data = pd.read_csv('Sentiment.csv')
+data = pd.read_csv('../dataset/Sentiment.csv')
 data = data[['text','sentiment']]
 
 # Splitting the dataset into train and test set

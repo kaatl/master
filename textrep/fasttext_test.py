@@ -11,7 +11,8 @@ def get_v_for_s(model, s):
 
 
 def fasttext_main2(s):
-    path = 'models/kyubyoung_no.bin' # https://github.com/Kyubyong/wordvectors
+    # path = 'models/kyubyoung_no.bin' # https://github.com/Kyubyong/wordvectors
+    path = 'models/fasttext_no.bin' # https://github.com/Kyubyong/wordvectors
 
     print "Loading model ..."
     model = load_model(path)

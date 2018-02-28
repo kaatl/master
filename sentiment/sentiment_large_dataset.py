@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 from subprocess import check_output
 
-data = pd.read_csv('dataset/imdb_sentiment.txt', sep=";;", engine = 'python')
+data = pd.read_csv('../dataset/imdb_sentiment.txt', sep=";;", engine = 'python')
 # testData = pd.read_csv('dataset/sentiment1.csv')
 train = data[['text','sentiment']]
 # test = testData[['text']]
