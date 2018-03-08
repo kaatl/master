@@ -10,13 +10,20 @@ from sumy.summarizers.lex_rank import LexRankSummarizer #We’re choosing Lexran
 
 from gensim.summarization.summarizer import summarize
 
-def getSummary(text):
+def getTextrankSum(text):
     summarized_text = summarizer.summarize(text, words=30, language="norwegian")
 
     if len(summarized_text) == 0:
         summarized_text = summarizer.summarize(text, words=50, language="norwegian")
 
     return summarized_text
+
+def getLexRankSum(text):
+    parser = PlaintextParser(text, Tokenizer("norwegian"))
+    summarizer = LexRankSummarizer()
+    lexrank_summary = summarizer(parser.document, 2)
+
+    return lexrank_summary
 
 def write_textsum_tofile(label, text, textrank_summary, lexrank_summary):
     with open('training_data_summarized.tsv', 'a') as file:
@@ -43,26 +50,32 @@ def main():
 
             if text_length > 50:
                 # LexRank
-                parser = PlaintextParser(text, Tokenizer("norwegian"))
-                summarizer = LexRankSummarizer()
-                lexrank_summary = summarizer(parser.document, 2)
+                lexrank_summary = getLexRankSum(text)
                 lexrank_summary = " ".join(str(sentence) for sentence in lexrank_summary)
+                lexrank_summary_list = lexrank_summary.split()
+                if len(lexrank_summary_list) > 50:
+                    lexrank_summary = " ".join(lexrank_summary_list[:50])
 
                 # TextRank
-                textrank_summary = getSummary(text).replace('\n', '. ')
+                textrank_summary = getTextrankSum(text).replace('\n', '. ')
                 textrank_summary_list = textrank_summary.split()
 
+                # If number of words are over 50
                 if len(textrank_summary_list) > 50:
 
+                    # Split for each sentence
                     textrank_summary_sentence = textrank_summary.split('.')
 
+                    # Include only the two first sentences
                     if len(textrank_summary_sentence) > 2:
                         textrank_summary = ". ".join([textrank_summary_sentence[0], textrank_summary_sentence[1]])
                     else:
                         textrank_summary = ". ".join(textrank_summary_sentence)
 
-                    if len(textrank_summary.split()) > 50:
-                        textrank_summary = " ".join(textrank_summary.split()[:50])
+                    textrank_summary_list = textrank_summary.split()
+                    # If the two sentences still are over 50 words, cut sentence after 50 words.
+                    if len(textrank_summary_list) > 50:
+                        textrank_summary = " ".join(textrank_summary_list[:50])
 
 
 
@@ -70,6 +83,7 @@ def main():
                 textrank_summary = text
                 lexrank_summary = text
 
+            # print len(lexrank_summary.split())
             write_textsum_tofile(label, text, textrank_summary, lexrank_summary)
 
 
