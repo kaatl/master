@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import time
 
@@ -43,8 +46,7 @@ def fasttext_main(s):
 
 
     vec_for_s = get_v_for_s(model, s) # Get vectors for sentence
-
+    print len(vec_for_s)
     return vec_for_s
-    # print vec_for_s
 
-print fasttext_main('Dette er en test')
+print fasttext_main('Nemnda tar ikke hensyn til vitneuttalelser, og saker som ikke er tilstrekkelig dokumentert kan ende opp som «ord mot ord». Likevel har Geving og forbundet et ønske om å bli enda bedre: Selv om vi har fokus på høy kvalitet gjøres det fremdeles feil, og vi har også forbedringspotensial.')
