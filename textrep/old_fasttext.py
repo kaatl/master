@@ -1,5 +1,9 @@
 import fasttext
 
+"""
+    CREDIT: https://github.com/Kyubyong/wordvectors
+"""
+
 def load_model(path):
     return fasttext.load_model(path)
 

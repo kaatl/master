@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
+"""
+    CREDIT: https://github.com/facebookresearch/fastText
+"""
+
 import numpy as np
 import time
 
@@ -16,37 +21,32 @@ def load_vector_model(path):
             line = line.split()
 
             word = line[0]
-            vec = np.array(line[1:])
+            vec = line[1:]
+
+            vec2 = []
+            for v in vec:
+                vec2.append(float(v))
             # vec = line[1:]
 
-            word_vec[line[0]] = vec
+            word_vec[line[0]] = vec2
+
+            with open('fasttext_vectors.tsv', 'a') as file:
+                file.write(word + '\t')
+                for x in vec2:
+                    file.write(str(x) + " ")
+
+                file.write('\n')
 
         print "Done!\n"
 
     return word_vec
 
-def get_v_for_w(model, word):
-    return model.get(word)
 
-def get_v_for_s(model, s):
-    return [get_v_for_w(model, w) for w in s.lower().split()]
+def fasttext_main():
 
+    # s = 'arbeidsulykke'
 
-
-
-def fasttext_main(s):
-
-    path = 'models/fasttext_no.vec' # https://github.com/facebookresearch/fastText
-    # s = "Dette er en test"
-
-    start_time = time.time() # Takes 20 - 30 seconds
+    path = 'textrep_datasets/models/fasttext_no.vec' # https://github.com/facebookresearch/fastText
     model = load_vector_model(path) # Load model
-    time_used = int(round(time.time() - start_time))
-    print "Time for loading the data is: {} seconds".format(time_used)
 
-
-    vec_for_s = get_v_for_s(model, s) # Get vectors for sentence
-    print len(vec_for_s)
-    return vec_for_s
-
-print fasttext_main('Nemnda tar ikke hensyn til vitneuttalelser, og saker som ikke er tilstrekkelig dokumentert kan ende opp som «ord mot ord». Likevel har Geving og forbundet et ønske om å bli enda bedre: Selv om vi har fokus på høy kvalitet gjøres det fremdeles feil, og vi har også forbedringspotensial.')
+fasttext_main()

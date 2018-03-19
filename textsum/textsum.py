@@ -26,11 +26,13 @@ def getLexRankSum(text):
     return lexrank_summary
 
 def write_textsum_tofile(label, text, textrank_summary, lexrank_summary):
-    with open('training_data_summarized.tsv', 'a') as file:
+    # with open('training_data_summarized.tsv', 'a') as file:
+    with open('textsum_datasets/test_data_summarized.tsv', 'a') as file:
         file.write(text + '\t' + textrank_summary + '\t' + str(lexrank_summary) + '\t' + label)
 
 def main():
-    with open('training_data.tsv', 'r') as file:
+    # with open('training_data.tsv', 'r') as file:
+    with open('textsum_datasets/test_data.tsv', 'r') as file:
         texts = file.readlines()
 
 

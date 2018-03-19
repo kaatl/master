@@ -1,26 +1,46 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-    CREDIT: https://github.com/Kyubyong/wordvectors
-"""
+import numpy as np
+import pandas as pd
 
-import gensim
+def read_model_tsv(path):
 
-def load_w2v_model_tsv():
-    # Eventuelt KeyedVectors.load_word2vec_format('w2v_model')????
-    model = gensim.models.Word2Vec.load('textrep_datasets/models/w2v/no.bin')
+    with open(path, 'r') as file:
+        print "Reading '{}' ...".format(path)
+        lines = file.readlines()
 
-    with open('textrep_datasets/trainingset.tsv', 'r') as file:
-    # with open('testset.tsv', 'r') as file:
+        word_vec = {}
+
+        print "Loading file to dictionary ..."
+        for line in lines:
+            line = line.split('\t')
+
+            word = line[0]
+            vec = line[1].split()
+
+            word_vec[word] = vec
+
+        print "Done!\n"
+
+    return word_vec
+
+def read_dataset_to_vector(model):
+    # with open('trainingset.tsv', 'r') as file:
+    with open('testset.tsv', 'r') as file:
         lines = file.readlines()[1:]
 
-        with open('trainingset_w2v.tsv', 'a') as f:
-        # with open('testset_w2v.tsv', 'a') as f:
+        # with open('trainingset_glove.tsv', 'a') as f:
+        # with open('testset_glove.tsv', 'a') as f:
+        # with open('trainingset_fasttext.tsv', 'a') as f:
+        with open('testset_fasttext.tsv', 'a') as f:
 
             for line in lines:
                 row = line.split('\t')
 
+                if len(row) < 2:
+                    print row
+                    continue
                 input_text = row[0].split()
                 input_label = row[1]
 
@@ -46,18 +66,14 @@ def load_w2v_model_tsv():
                         continue
                     try:
                         vec = model[word]
-
-                        vec2 = []
-                        for v in vec:
-                            vec2.append(float(v))
                     except KeyError:
                         continue;
 
-                    # print vec2[0]
-                    for dim in vec2:
-                        s += str(dim) + " "
+                    for dim in vec:
+                        s += dim + " "
                     s = s[:-1] # Ignore last space
                     s += ","
+
 
                 label = ""
                 s = s[:-1]
@@ -72,8 +88,15 @@ def load_w2v_model_tsv():
 
                 f.write(s + "\n")
 
-load_w2v_model_tsv()
+def glove_main():
 
-# Sources:
-# https://radimrehurek.com/gensim/models/word2vec.html
-# https://rare-technologies.com/word2vec-tutorial/
+    # vectors = 'textrep_datasets/models_tsv/fasttext_vectors.tsv'
+    # vectors = 'textrep_datasets/models_tsv/glove_vectors.tsv'
+
+    # model = read_model_tsv(vectors)
+    model = gensim.models.Word2Vec.load('textrep_datasets/models/w2v/no.bin')
+
+    read_dataset_to_vector(model)
+
+
+glove_main()
