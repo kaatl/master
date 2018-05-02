@@ -12,7 +12,7 @@ def load_w2v_model_tsv():
     model = gensim.models.Word2Vec.load('textrep_datasets/models/w2v/no.bin')
 
     with open('textrep_datasets/trainingset.tsv', 'r') as file:
-    # with open('testset.tsv', 'r') as file:
+    # with open('textrep_datasets/testset.tsv', 'r') as file:
         lines = file.readlines()[1:]
 
         with open('trainingset_w2v.tsv', 'a') as f:
@@ -68,7 +68,14 @@ def load_w2v_model_tsv():
                 else:
                     print input_label
 
+                if len(input_text) <= 1:
+                    print input_text
+                    print "HEIHEI"
+                    s += "0.0"
+
                 s += "\t" + label
+
+
 
                 f.write(s + "\n")
 
@@ -77,3 +84,6 @@ load_w2v_model_tsv()
 # Sources:
 # https://radimrehurek.com/gensim/models/word2vec.html
 # https://rare-technologies.com/word2vec-tutorial/
+
+
+# 380 og 432

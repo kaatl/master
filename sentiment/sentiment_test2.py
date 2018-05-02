@@ -15,7 +15,7 @@ train = [('I love this sandwich.', 'pos'),
 all_words = set(word.lower() for passage in train for word in word_tokenize(passage[0]))
 t = [({word: (word in word_tokenize(x[0])) for word in all_words}, x[1]) for x in train]
 
-test_sentence = "This is the best band I've ever heard!"
+test_sentence = "This is not the best band I've ever heard!"
 test_sent_features = {word.lower(): (word in word_tokenize(test_sentence.lower())) for word in all_words}
 
 classifier = nltk.NaiveBayesClassifier.train(t)
